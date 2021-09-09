@@ -2,6 +2,7 @@ import { ViewSection } from "../ViewSection";
 import { ExtensionsViewItem } from "./ExtensionsViewItem";
 import { until, Key } from "selenium-webdriver";
 import { ViewContent } from "../ViewContent";
+import { IExtensionsViewSection } from "extension-tester-page-objects";
 
 /**
  * Categories of extensions to search for
@@ -17,7 +18,7 @@ enum ExtensionCategory {
 /**
  * View section containing extensions
  */
-export class ExtensionsViewSection extends ViewSection {
+export class ExtensionsViewSection extends ViewSection implements IExtensionsViewSection {
     async getVisibleItems(): Promise<ExtensionsViewItem[]> {
         const extensionTable = await this.findElement(ExtensionsViewSection.locators.ExtensionsViewSection.items);
         const extensionRows = await extensionTable.findElements(ExtensionsViewSection.locators.ExtensionsViewSection.itemRow);

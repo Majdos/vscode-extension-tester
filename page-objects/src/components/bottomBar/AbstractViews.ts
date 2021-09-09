@@ -1,11 +1,12 @@
 import { Key, WebElement } from 'selenium-webdriver';
 import * as clipboard from 'clipboardy';
 import { ElementWithContexMenu } from "../ElementWithContextMenu";
+import { IChannelView, ITextView } from "extension-tester-page-objects";
 
 /**
  * View with channel selector
  */
-export abstract class ChannelView extends ElementWithContexMenu {
+export abstract class ChannelView extends ElementWithContexMenu implements IChannelView {
     protected actionsLabel!: string;
 
     /**
@@ -88,7 +89,7 @@ export abstract class ChannelView extends ElementWithContexMenu {
 /**
  * View with channel selection and text area
  */
-export abstract class TextView extends ChannelView {
+export abstract class TextView extends ChannelView implements ITextView {
     protected actionsLabel!: string;
 
     /**

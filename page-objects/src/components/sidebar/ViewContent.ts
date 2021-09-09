@@ -4,11 +4,12 @@ import { WebElement } from "selenium-webdriver";
 import { DefaultTreeSection } from "./tree/default/DefaultTreeSection";
 import { CustomTreeSection } from "./tree/custom/CustomTreeSection";
 import { ExtensionsViewSection } from "./extensions/ExtensionsViewSection";
+import { IViewContent, IViewSection } from "extension-tester-page-objects";
 
 /**
  * Page object representing the view container of a side bar view
  */
-export class ViewContent extends AbstractElement {
+export class ViewContent extends AbstractElement implements IViewContent {
     constructor(view: SideBarView = new SideBarView()) {
         super(ViewContent.locators.ViewContent.constructor, view);
     }
@@ -31,7 +32,7 @@ export class ViewContent extends AbstractElement {
      * @param title Title of the section
      * @returns Promise resolving to ViewSection object
      */
-    async getSection(title: string): Promise<ViewSection> {
+    async getSection(title: string): Promise<IViewSection> {
         const elements = await this.findElements(ViewContent.locators.ViewContent.section);
         let panel!: WebElement;
 
@@ -52,7 +53,7 @@ export class ViewContent extends AbstractElement {
      * Retrieves all the collapsible view content sections
      * @returns Promise resolving to array of ViewSection objects
      */
-    async getSections(): Promise<ViewSection[]> {
+    async getSections(): Promise<IViewSection[]> {
         const sections: ViewSection[] = [];
         const elements = await this.findElements(ViewContent.locators.ViewContent.section);
         for (const element of elements) {
@@ -62,7 +63,7 @@ export class ViewContent extends AbstractElement {
         return sections;
     }
 
-    private async createSection(panel: WebElement): Promise<ViewSection> {
+    private async createSection(panel: WebElement): Promise<IViewSection> {
         let section: ViewSection = new DefaultTreeSection(panel, this);
         try {
             await section.findElement(ViewContent.locators.ViewContent.defaultView);

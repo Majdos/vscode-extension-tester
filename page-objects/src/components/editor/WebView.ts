@@ -1,10 +1,11 @@
 import { Editor } from "./Editor";
 import { By, Locator, until, WebElement } from "selenium-webdriver";
+import { IWebView } from "extension-tester-page-objects";
 
 /**
  * Page object representing an open editor containing a web view
  */
-export class WebView extends Editor {
+export class WebView extends Editor implements IWebView {
 
     private static handle: string | undefined;
 

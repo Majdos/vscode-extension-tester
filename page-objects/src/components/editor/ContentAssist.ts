@@ -1,10 +1,13 @@
 import { TextEditor, Menu, MenuItem, DebugConsoleView } from "../..";
 import { WebElement } from 'selenium-webdriver';
+import { IContentAssist, IMenuItem } from "extension-tester-page-objects";
+import { IContentAssistItem } from "extension-tester-page-objects";
+
 
 /**
  * Page object representing the content assistant
  */
-export class ContentAssist extends Menu {
+export class ContentAssist extends Menu implements IContentAssist {
     constructor(parent: TextEditor | DebugConsoleView) {
         super(ContentAssist.locators.ContentAssist.constructor, parent);
     }
@@ -14,7 +17,7 @@ export class ContentAssist extends Menu {
      * @param name name/text to search by
      * @returns Promise resolving to ContentAssistItem object
      */
-    async getItem(name: string): Promise<ContentAssistItem | undefined> {
+    async getItem(name: string): Promise<IMenuItem | undefined> {
         const items = await this.getItems();
         
         for (const item of items) {
@@ -28,7 +31,7 @@ export class ContentAssist extends Menu {
      * Get all visible content assist items
      * @returns Promise resolving to array of ContentAssistItem objects
      */
-    async getItems(): Promise<ContentAssistItem[]> {
+    async getItems(): Promise<IMenuItem[]> {
         await this.getDriver().wait(() => { return this.isLoaded(); });
 
         const elements = await this.findElement(ContentAssist.locators.ContentAssist.itemRows)
@@ -59,7 +62,7 @@ export class ContentAssist extends Menu {
 /**
  * Page object for a content assist item
  */
-export class ContentAssistItem extends MenuItem {
+export class ContentAssistItem extends MenuItem implements IContentAssistItem {
     constructor(item: WebElement, contentAssist: ContentAssist) {
         super(item, contentAssist);
         this.parent = contentAssist;

@@ -1,10 +1,11 @@
 import { WebElement, WebDriver, Locator, until, By, Key } from "selenium-webdriver";
 import { Locators } from "../locators/locators";
+import { AbstractElement as IAbstractElement } from 'extension-tester-page-objects';
 
 /**
  * Default wrapper for webelement
  */
-export abstract class AbstractElement extends WebElement {
+export abstract class AbstractElement extends WebElement implements IAbstractElement {
 
     public static ctlKey = process.platform === 'darwin' ? Key.COMMAND : Key.CONTROL;
     protected static driver: WebDriver;

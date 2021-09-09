@@ -7,11 +7,13 @@ import { SettingsEditor } from "./SettingsEditor";
 import { WebView } from "./WebView";
 import { DiffEditor } from './DiffEditor';
 import { ElementWithContexMenu } from "../ElementWithContextMenu";
+import { IEditor, IEditorGroup, IEditorTab, IEditorView } from "extension-tester-page-objects";
+
 
 /**
  * View handling the open editors
  */
-export class EditorView extends AbstractElement {
+export class EditorView extends AbstractElement implements IEditorView {
     constructor() {
         super(EditorView.locators.EditorView.constructor, EditorView.locators.Workbench.constructor);
     }
@@ -22,7 +24,7 @@ export class EditorView extends AbstractElement {
      * @param groupIndex zero based index for the editor group (0 for the left most group)
      * @returns Promise resolving to Editor object
      */
-    async openEditor(title: string, groupIndex: number = 0): Promise<Editor> {
+    async openEditor(title: string, groupIndex: number = 0): Promise<IEditor> {
         const group = await this.getEditorGroup(groupIndex);
         return group.openEditor(title);
     }
@@ -78,7 +80,7 @@ export class EditorView extends AbstractElement {
      * @param groupIndex zero based index of the editor group, default 0 (leftmost one)
      * @returns promise resolving to EditorTab object
      */
-    async getTabByTitle(title: string, groupIndex: number = 0): Promise<EditorTab> {
+    async getTabByTitle(title: string, groupIndex: number = 0): Promise<IEditorTab> {
         const group = await this.getEditorGroup(groupIndex);
         return group.getTabByTitle(title);
     }
@@ -88,7 +90,7 @@ export class EditorView extends AbstractElement {
      * @param groupIndex index of group to search for tabs, if left undefined, all groups are searched
      * @returns promise resolving to EditorTab list
      */
-    async getOpenTabs(groupIndex?: number): Promise<EditorTab[]> {
+    async getOpenTabs(groupIndex?: number): Promise<IEditorTab[]> {
         const groups = await this.getEditorGroups();
         if (groupIndex !== undefined) {
             return groups[groupIndex].getOpenTabs();
@@ -104,7 +106,7 @@ export class EditorView extends AbstractElement {
      * Retrieve the active editor tab
      * @returns promise resolving to EditorTab object, undefined if no tab is active
      */
-    async getActiveTab(): Promise<EditorTab | undefined> {
+    async getActiveTab(): Promise<IEditorTab | undefined> {
         const tabs = await this.getOpenTabs();
         const klasses = await Promise.all(tabs.map(async tab => tab.getAttribute('class')));
         const index = klasses.findIndex(klass => klass.indexOf('active') > -1);
@@ -119,7 +121,7 @@ export class EditorView extends AbstractElement {
      * Retrieve all editor groups in a list, sorted left to right
      * @returns promise resolving to an array of EditorGroup objects
      */
-    async getEditorGroups(): Promise<EditorGroup[]> {
+    async getEditorGroups(): Promise<IEditorGroup[]> {
         const elements = await this.findElements(EditorGroup.locators.EditorView.editorGroup);
         const groups = await Promise.all(elements.map(async (element) => new EditorGroup(element, this).wait()));
         
@@ -141,7 +143,7 @@ export class EditorView extends AbstractElement {
      * @param index zero based index of the editor group (leftmost group has index 0)
      * @returns promise resolving to an EditorGroup object
      */
-    async getEditorGroup(index: number): Promise<EditorGroup> {
+    async getEditorGroup(index: number): Promise<IEditorGroup> {
         return (await this.getEditorGroups())[index];
     }
 
@@ -169,7 +171,7 @@ export class EditorView extends AbstractElement {
 /**
  * Page object representing an editor group
  */
-export class EditorGroup extends AbstractElement {
+export class EditorGroup extends AbstractElement implements IEditorGroup {
     constructor(element: WebElement, view: EditorView = new EditorView()) {
         super(element, view);
     }
@@ -179,7 +181,7 @@ export class EditorGroup extends AbstractElement {
      * @param title title of the tab
      * @returns Promise resolving to Editor object
      */
-    async openEditor(title: string): Promise<Editor> {
+    async openEditor(title: string): Promise<IEditor> {
         const tab = await this.getTabByTitle(title);
         await tab.select();
 
@@ -250,7 +252,7 @@ export class EditorGroup extends AbstractElement {
      * @param title title of the tab
      * @returns promise resolving to EditorTab object
      */
-    async getTabByTitle(title: string): Promise<EditorTab> {
+    async getTabByTitle(title: string): Promise<IEditorTab> {
         const tabs = await this.findElements(EditorView.locators.EditorView.tab);
         let tab!: WebElement;
         for (const element of tabs) {
@@ -270,7 +272,7 @@ export class EditorGroup extends AbstractElement {
      * Retrieve all open editor tabs
      * @returns promise resolving to EditorTab list
      */
-    async getOpenTabs(): Promise<EditorTab[]> {
+    async getOpenTabs(): Promise<IEditorTab[]> {
         const tabs = await this.findElements(EditorView.locators.EditorView.tab);
         return Promise.all(tabs.map(async tab => new EditorTab(tab, this.enclosingItem as EditorView).wait()));
     }
@@ -279,7 +281,7 @@ export class EditorGroup extends AbstractElement {
      * Retrieve the active editor tab
      * @returns promise resolving to EditorTab object, undefined if no tab is active
      */
-    async getActiveTab(): Promise<EditorTab | undefined> {
+    async getActiveTab(): Promise<IEditorTab | undefined> {
         const tabs = await this.getOpenTabs();
         const klasses = await Promise.all(tabs.map(async tab => tab.getAttribute('class')));
         const index = klasses.findIndex(klass => klass.indexOf('active') > -1);
@@ -317,7 +319,7 @@ export class EditorGroup extends AbstractElement {
 /**
  * Page object for editor view tab
  */
-export class EditorTab extends ElementWithContexMenu {
+export class EditorTab extends ElementWithContexMenu implements IEditorTab {
     constructor(element: WebElement, view: EditorView) {
         super(element, view);
     }

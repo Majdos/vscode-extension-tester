@@ -1,14 +1,14 @@
 import { ScmView, ScmProvider, MoreAction, ScmChange } from "./ScmView";
 import { WebElement, Key } from "selenium-webdriver";
-import { ContextMenu } from "../../menu/ContextMenu";
 import { ElementWithContexMenu } from "../../ElementWithContextMenu";
+import { IScmProvider, IMenu } from "extension-tester-page-objects";
 
 /**
  * New SCM view for code 1.47 onwards
  */
 export class NewScmView extends ScmView {
 
-    async getProviders(): Promise<ScmProvider[]> {
+    async getProviders(): Promise<IScmProvider[]> {
         const inputs = await this.findElements(NewScmView.locators.ScmView.inputField);
         if (inputs.length < 1) {
             return [];
@@ -57,7 +57,7 @@ export class SingleScmProvider extends ScmProvider {
         return false;
     }
 
-    async openMoreActions(): Promise<ContextMenu> {
+    async openMoreActions(): Promise<IMenu> {
         const view = this.enclosingItem as NewScmView;
         return new MoreAction(view).openContextMenu();
     }
@@ -101,7 +101,7 @@ export class MultiScmProvider extends ScmProvider {
         return false;
     }
 
-    async openMoreActions(): Promise<ContextMenu> {
+    async openMoreActions(): Promise<IMenu> {
         return new MultiMoreAction(this).openContextMenu();
     }
 

@@ -1,11 +1,12 @@
 import { ElementWithContexMenu } from "../ElementWithContextMenu";
 import { AbstractElement } from "../AbstractElement";
 import { WebElement, By } from "selenium-webdriver";
+import { IViewItem, ITreeItem, IViewItemAction } from "extension-tester-page-objects";
 
 /**
  * Arbitrary item in the side bar view
  */
-export abstract class ViewItem extends ElementWithContexMenu {
+export abstract class ViewItem extends ElementWithContexMenu implements IViewItem {
     /**
      * Select the item in the view.
      * Note that selecting the item will toggle its expand state when applicable.
@@ -20,7 +21,7 @@ export abstract class ViewItem extends ElementWithContexMenu {
 /**
  * Abstract representation of a row in the tree inside a view content section
  */
-export abstract class TreeItem extends ViewItem {
+export abstract class TreeItem extends ViewItem implements ITreeItem {
     /**
      * Retrieves the label of this view item
      */
@@ -64,7 +65,7 @@ export abstract class TreeItem extends ViewItem {
      * Find children of an item, will try to expand the item in the process
      * @returns Promise resolving to array of TreeItem objects, empty array if item has no children
      */
-    abstract getChildren(): Promise<TreeItem[]>
+    abstract getChildren(): Promise<ITreeItem[]>
 
     /**
      * Finds if the item is expandable/collapsible
@@ -85,7 +86,7 @@ export abstract class TreeItem extends ViewItem {
      * Find a child item with the given name
      * @returns Promise resolving to TreeItem object if the child item exists, undefined otherwise
      */
-    async findChildItem(name: string): Promise<TreeItem | undefined> {
+    async findChildItem(name: string): Promise<ITreeItem | undefined> {
         const children = await this.getChildren();
         for (const item of children) {
             if (await item.getLabel() === name) {
@@ -109,7 +110,7 @@ export abstract class TreeItem extends ViewItem {
      * @returns array of ViewItemAction objects, empty array if item has no
      * actions associated
      */
-    async getActionButtons(): Promise<ViewItemAction[]> {
+    async getActionButtons(): Promise<IViewItemAction[]> {
         let container: WebElement;
         try {
             container = await this.findElement(TreeItem.locators.TreeItem.actions);
@@ -132,7 +133,7 @@ export abstract class TreeItem extends ViewItem {
      *
      * @returns ViewItemAction object if such button exists, undefined otherwise
      */
-    async getActionButton(label: string): Promise<ViewItemAction | undefined> {
+    async getActionButton(label: string): Promise<IViewItemAction | undefined> {
         const actions = await this.getActionButtons();
         if (actions.length > 0) {
             return actions.find((item) => { return item.getLabel().indexOf(label) > -1; });
@@ -175,7 +176,7 @@ export abstract class TreeItem extends ViewItem {
 /**
  * Action button bound to a view item
  */
-export class ViewItemAction extends AbstractElement {
+export class ViewItemAction extends AbstractElement implements IViewItemAction {
     private label: string;
 
     constructor(label: string, viewItem: TreeItem) {

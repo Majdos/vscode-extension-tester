@@ -2,11 +2,12 @@ import { ActivityBar, DebugView, SideBarView, ScmView } from "../..";
 import { ElementWithContexMenu } from "../ElementWithContextMenu";
 import { WebElement } from "selenium-webdriver";
 import { NewScmView } from "../sidebar/scm/NewScmView";
+import { IViewControl, ISideBarView } from "extension-tester-page-objects";
 
 /**
  * Page object representing a view container item in the activity bar
  */
-export class ViewControl extends ElementWithContexMenu {
+export class ViewControl extends ElementWithContexMenu implements IViewControl {
     constructor(element: WebElement, bar: ActivityBar) {
         super(element, bar);
     }
@@ -15,7 +16,7 @@ export class ViewControl extends ElementWithContexMenu {
      * Opens the associated view if not already open
      * @returns Promise resolving to SideBarView object representing the opened view
      */
-    async openView(): Promise<SideBarView> {
+    async openView(): Promise<ISideBarView> {
         const klass = await this.getAttribute(ViewControl.locators.ViewControl.attribute);
         if (klass.indexOf(ViewControl.locators.ViewControl.klass) < 0) {
             await this.click();

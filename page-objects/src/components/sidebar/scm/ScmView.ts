@@ -3,18 +3,19 @@ import { WebElement, Key, By } from "selenium-webdriver";
 import { AbstractElement } from "../../AbstractElement";
 import { ContextMenu } from "../../..";
 import { ElementWithContexMenu } from "../../ElementWithContextMenu";
+import { IMenu, IMoreAction, IScmChange, IScmProvider, IScmView } from "extension-tester-page-objects";
 
 /**
  * Page object representing the Source Control view
  */
-export class ScmView extends SideBarView {
+export class ScmView extends SideBarView implements IScmView {
 
     /**
      * Get SCM provider (repository) by title
      * @param title name of the repository
      * @returns promise resolving to ScmProvider object
      */
-    async getProvider(title?: string): Promise<ScmProvider | undefined> {
+    async getProvider(title?: string): Promise<IScmProvider | undefined> {
         const providers = await this.getProviders();
         if (!title || providers.length === 1) {
             return providers[0];
@@ -29,7 +30,7 @@ export class ScmView extends SideBarView {
      * Get all SCM providers
      * @returns promise resolving to ScmProvider array
      */
-    async getProviders(): Promise<ScmProvider[]> {
+    async getProviders(): Promise<IScmProvider[]> {
         const headers = await this.findElements(ScmView.locators.ScmView.providerHeader);
         const sections = await Promise.all(headers.map(async header => header.findElement(ScmView.locators.ScmView.providerRelative)));
         return Promise.all(sections.map(async section => new ScmProvider(section, this)));
@@ -53,7 +54,7 @@ export class ScmView extends SideBarView {
  * Page object representing a repository in the source control view
  * Maps roughly to a view section of the source control view
  */
-export class ScmProvider extends AbstractElement {
+export class ScmProvider extends AbstractElement implements IScmProvider {
     constructor(element: WebElement, view: ScmView) {
         super(element, view);
     }
@@ -101,7 +102,7 @@ export class ScmProvider extends AbstractElement {
      * Open a context menu using the 'More Actions...' button
      * @returns Promise resolving to a ContextMenu object
      */
-    async openMoreActions(): Promise<ContextMenu> {
+    async openMoreActions(): Promise<IMenu> {
         const header = await this.findElement(ScmProvider.locators.ScmView.providerHeader);
         if ((await header.getAttribute('class')).indexOf('hidden') > -1) {
             return new MoreAction(this.enclosingItem as ScmView).openContextMenu();
@@ -128,7 +129,7 @@ export class ScmProvider extends AbstractElement {
      * @param staged when true, finds staged changes; otherwise finds unstaged changes
      * @returns promise resolving to ScmChange object array
      */
-    async getChanges(staged: boolean = false): Promise<ScmChange[]> {
+    async getChanges(staged: boolean = false): Promise<IScmChange[]> {
         const changes = await this.getChangeCount(staged);
         const label = staged ? 'STAGED CHANGES' : 'CHANGES';
 
@@ -171,7 +172,7 @@ export class ScmProvider extends AbstractElement {
 /**
  * Page object representing a SCM change tree item
  */
-export class ScmChange extends ElementWithContexMenu {
+export class ScmChange extends ElementWithContexMenu implements IScmChange {
 
     constructor(row: WebElement, provider: ScmProvider) {
         super(row, provider);
@@ -254,12 +255,12 @@ export class ScmChange extends ElementWithContexMenu {
     }
 }
 
-export class MoreAction extends ElementWithContexMenu {
+export class MoreAction extends ElementWithContexMenu implements IMoreAction {
     constructor(scm: ScmProvider | ScmView) {
         super(MoreAction.locators.ScmView.more,scm);
     }
 
-    async openContextMenu(): Promise<ContextMenu> {
+    async openContextMenu(): Promise<IMenu> {
         await this.click();
         const shadowRootHost = await this.enclosingItem.findElements(By.className('shadow-root-host'));
         await this.getDriver().actions().sendKeys(Key.ESCAPE).perform();

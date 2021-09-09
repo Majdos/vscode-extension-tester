@@ -1,16 +1,17 @@
 import { AbstractElement } from "./AbstractElement";
 import { ContextMenu } from "..";
 import { Button, until, error } from 'selenium-webdriver';
+import { IElementWithContextMenu, IMenu } from 'extension-tester-page-objects';
 
 /**
  * Abstract element that has a context menu
  */
-export abstract class ElementWithContexMenu extends AbstractElement {
+export abstract class ElementWithContexMenu extends AbstractElement implements IElementWithContextMenu {
 
     /**
      * Open context menu on the element
      */
-    async openContextMenu(): Promise<ContextMenu> {
+    async openContextMenu(): Promise<IMenu> {
         const workbench = await this.getDriver().findElement(ElementWithContexMenu.locators.Workbench.constructor);
         const menus = await workbench.findElements(ElementWithContexMenu.locators.ContextMenu.contextView);
 

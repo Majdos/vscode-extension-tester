@@ -1,10 +1,12 @@
 import { WebElement } from "selenium-webdriver";
 import { AbstractElement } from "../AbstractElement";
+import { IModalDialog } from "extension-tester-page-objects";
+
 
 /**
  * Page Object for Custom Style Modal Dialogs (non-native)
  */
-export class ModalDialog extends AbstractElement {
+export class ModalDialog extends AbstractElement implements IModalDialog {
     constructor() {
         super(ModalDialog.locators.Dialog.constructor);
     }

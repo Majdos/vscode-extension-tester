@@ -2,11 +2,12 @@ import { AbstractElement } from "../AbstractElement";
 import { By, Key, until, WebElement } from "selenium-webdriver";
 import { TitleBar } from "../menu/TitleBar";
 import { ProblemsView, OutputView, DebugConsoleView, TerminalView } from "../..";
+import { IBottomBarPanel, IDebugConsoleView, IOutputView, IProblemsView, ITerminalView } from "extension-tester-page-objects";
 
 /**
  * Page object for the bottom view panel
  */
-export class BottomBarPanel extends AbstractElement {
+export class BottomBarPanel extends AbstractElement implements IBottomBarPanel {
     constructor() {
         super(BottomBarPanel.locators.BottomBarPanel.constructor, BottomBarPanel.locators.Workbench.constructor);
     }
@@ -32,7 +33,7 @@ export class BottomBarPanel extends AbstractElement {
      * Open the Problems view in the bottom panel
      * @returns Promise resolving to a ProblemsView object
      */
-    async openProblemsView(): Promise<ProblemsView> {
+    async openProblemsView(): Promise<IProblemsView> {
         await this.openTab(BottomBarPanel.locators.BottomBarPanel.problemsTab);
         return new ProblemsView(this).wait();
     }
@@ -41,7 +42,7 @@ export class BottomBarPanel extends AbstractElement {
      * Open the Output view in the bottom panel
      * @returns Promise resolving to OutputView object
      */
-    async openOutputView(): Promise<OutputView> {
+    async openOutputView(): Promise<IOutputView> {
         await this.openTab(BottomBarPanel.locators.BottomBarPanel.outputTab);
         return new OutputView(this).wait();
     }
@@ -50,7 +51,7 @@ export class BottomBarPanel extends AbstractElement {
      * Open the Debug Console view in the bottom panel
      * @returns Promise resolving to DebugConsoleView object
      */
-    async openDebugConsoleView(): Promise<DebugConsoleView> {
+    async openDebugConsoleView(): Promise<IDebugConsoleView> {
         await this.openTab(BottomBarPanel.locators.BottomBarPanel.debugTab);
         return new DebugConsoleView(this).wait();
     }
@@ -59,7 +60,7 @@ export class BottomBarPanel extends AbstractElement {
      * Open the Terminal view in the bottom panel
      * @returns Promise resolving to TerminalView object
      */
-    async openTerminalView(): Promise<TerminalView> {
+    async openTerminalView(): Promise<ITerminalView> {
         await this.openTab(BottomBarPanel.locators.BottomBarPanel.terminalTab);
         return new TerminalView(this).wait();
     }

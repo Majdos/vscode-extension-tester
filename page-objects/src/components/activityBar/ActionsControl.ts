@@ -1,11 +1,12 @@
 import { WebElement } from "selenium-webdriver";
-import { ActivityBar, ContextMenu } from "../..";
+import { ActivityBar } from "../..";
 import { ElementWithContexMenu } from "../ElementWithContextMenu";
+import { IActionsControl, IMenu } from "extension-tester-page-objects";
 
 /**
  * Page object representing the global action controls on the bottom of the action bar
  */
-export class ActionsControl extends ElementWithContexMenu {
+export class ActionsControl extends ElementWithContexMenu implements IActionsControl {
     constructor(element: WebElement, bar: ActivityBar) {
         super(element, bar);
     }
@@ -14,7 +15,7 @@ export class ActionsControl extends ElementWithContexMenu {
      * Open the context menu bound to this global action
      * @returns Promise resolving to ContextMenu object representing the action's menu
      */
-    async openActionMenu(): Promise<ContextMenu> {
+    async openActionMenu(): Promise<IMenu> {
         return this.openContextMenu();
     }
 

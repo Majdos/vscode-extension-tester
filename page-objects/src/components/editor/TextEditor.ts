@@ -6,11 +6,12 @@ import { StatusBar } from "../statusBar/StatusBar";
 import { Editor } from "./Editor";
 import { ElementWithContexMenu } from "../ElementWithContextMenu";
 import { AbstractElement } from "../AbstractElement";
+import { IContentAssist, IMenu, ITextEditor } from "extension-tester-page-objects";
 
 /**
  * Page object representing the active text editor
  */
-export class TextEditor extends Editor {
+export class TextEditor extends Editor implements ITextEditor {
 
     /**
      * Find whether the active editor has unsaved changes
@@ -54,7 +55,7 @@ export class TextEditor extends Editor {
      * @param open true to open, false to close
      * @returns Promise resolving to ContentAssist object when opening, void otherwise
      */
-    async toggleContentAssist(open: boolean): Promise<ContentAssist | void> {
+    async toggleContentAssist(open: boolean): Promise<IContentAssist | void> {
         let isHidden = true;
         try {
             const assist = await this.findElement(TextEditor.locators.ContentAssist.constructor)
@@ -311,7 +312,7 @@ export class TextEditor extends Editor {
         }
     }
 
-    async openContextMenu(): Promise<ContextMenu> {
+    async openContextMenu(): Promise<IMenu> {
         await this.getDriver().actions().click(this, Button.RIGHT).perform();
         const shadowRootHost = await this.enclosingItem.findElements(By.className('shadow-root-host'));
         
@@ -374,7 +375,7 @@ class Selection extends ElementWithContexMenu {
         super(el, editor);
     }
 
-    async openContextMenu(): Promise<ContextMenu> {
+    async openContextMenu(): Promise<IMenu> {
         const ed = this.getEnclosingElement() as TextEditor;
         await this.getDriver().actions().click(this, Button.RIGHT).perform();
         const shadowRootHost = await ed.getEnclosingElement().findElements(By.className('shadow-root-host'));

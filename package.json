@@ -68,6 +68,7 @@
     "vscode-extension-tester-locators": "^1.60.0"
   },
   "peerDependencies": {
+    "extension-tester-page-objects": "^1.0.0",
     "mocha": ">=5.2.0"
   }
 }

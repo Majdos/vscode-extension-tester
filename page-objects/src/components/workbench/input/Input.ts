@@ -2,11 +2,12 @@ import { AbstractElement } from "../../AbstractElement";
 import { Key } from "selenium-webdriver";
 import { QuickOpenBox } from "../../..";
 import * as clipboard from 'clipboardy';
+import { IInput, IQuickPickItem } from "extension-tester-page-objects";
 
 /**
  * Abstract page object for input fields
  */
-export abstract class Input extends AbstractElement {
+export abstract class Input extends AbstractElement implements IInput {
 
     /**
      * Get current text of the input field
@@ -129,7 +130,7 @@ export abstract class Input extends AbstractElement {
      * @param indexOrText index (number) or text (string) of the item to search by
      * @returns Promise resolvnig to QuickPickItem if found, to undefined otherwise
      */
-    async findQuickPick(indexOrText: string | number): Promise<QuickPickItem | undefined> {
+    async findQuickPick(indexOrText: string | number): Promise<IQuickPickItem | undefined> {
         const input = await this.findElement(Input.locators.Input.inputBox)
             .findElement(Input.locators.Input.input);
         const first = await this.findElements(Input.locators.Input.quickPickPosition(1));
@@ -152,7 +153,7 @@ export abstract class Input extends AbstractElement {
                     if (text.indexOf(indexOrText) > -1) {
                         return pick;
                     }
-                } else if (indexOrText === pick.getIndex()){
+                } else if (indexOrText === await pick.getIndex()){
                     return pick;
                 }
             }
@@ -201,7 +202,7 @@ export abstract class Input extends AbstractElement {
      * (visible in the quick pick menu)
      * @returns Promise resolving to array of QuickPickItem objects
      */
-    abstract getQuickPicks(): Promise<QuickPickItem[]>
+    abstract getQuickPicks(): Promise<IQuickPickItem[]>
 
     private async resetPosition(): Promise<void> {
         const text = await this.getText();
@@ -213,7 +214,7 @@ export abstract class Input extends AbstractElement {
 /**
  * Page object representing a quick pick option in the input box
  */
-export class QuickPickItem extends AbstractElement {
+export class QuickPickItem extends AbstractElement implements IQuickPickItem {
     private index: number;
 
     constructor(index: number, input: Input) {
@@ -246,7 +247,7 @@ export class QuickPickItem extends AbstractElement {
     /**
      * Get the index of the quick pick item
      */
-    getIndex(): number {
+    async getIndex(): Promise<number> {
         return this.index;
     }
 

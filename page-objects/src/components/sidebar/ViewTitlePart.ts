@@ -1,11 +1,12 @@
 import { ElementWithContexMenu } from "../ElementWithContextMenu";
 import { AbstractElement } from "../AbstractElement";
 import { SideBarView } from "../..";
+import { ITitleActionButton, IViewTitlePart } from "extension-tester-page-objects";
 
 /**
  * Page object representing the top (title) part of a side bar view
  */
-export class ViewTitlePart extends ElementWithContexMenu {
+export class ViewTitlePart extends ElementWithContexMenu implements IViewTitlePart {
     constructor(view: SideBarView = new SideBarView()) {
         super(ViewTitlePart.locators.ViewTitlePart.constructor, view);
     }
@@ -22,7 +23,7 @@ export class ViewTitlePart extends ElementWithContexMenu {
      * Finds action buttons inside the view title part
      * @returns Promise resolving to array of TitleActionButton objects
      */
-    async getActions(): Promise<TitleActionButton[]> {
+    async getActions(): Promise<ITitleActionButton[]> {
         const actions: TitleActionButton[] = [];
         const elements = await this.findElements(ViewTitlePart.locators.ViewTitlePart.action);
         for (const element of elements) {
@@ -37,7 +38,7 @@ export class ViewTitlePart extends ElementWithContexMenu {
      * @param title title of the button to search for
      * @returns Promise resolving to TitleActionButton object
      */
-    async getAction(title: string): Promise<TitleActionButton> {
+    async getAction(title: string): Promise<ITitleActionButton> {
         return new TitleActionButton(title, this);
     }
  }
@@ -45,7 +46,7 @@ export class ViewTitlePart extends ElementWithContexMenu {
  /**
   * Page object representing a button inside the view title part
   */
- export class TitleActionButton extends AbstractElement {
+ export class TitleActionButton extends AbstractElement implements ITitleActionButton {
     private title: string;
 
     constructor(title: string, viewTitle: ViewTitlePart) {
@@ -56,7 +57,7 @@ export class ViewTitlePart extends ElementWithContexMenu {
     /**
      * Get title of the button
      */
-    getTitle(): string {
+    async getTitle(): Promise<string> {
         return this.title;
     }
  }
