@@ -55,17 +55,18 @@
     "@types/selenium-webdriver": "^3.0.15",
     "commander": "^8.0.0",
     "compare-versions": "^3.6.0",
+    "extension-tester-page-objects": "file:../extension-tester-page-objects",
     "fs-extra": "^10.0.0",
     "glob": "^7.1.7",
     "js-yaml": "^4.1.0",
-    "monaco-page-objects": "^1.7.0",
+    "monaco-page-objects": "file:page-objects",
     "request": "^2.88.0",
     "sanitize-filename": "^1.6.3",
-    "selenium-webdriver": "^3.0.0",
+    "selenium-webdriver": "3.0.0",
     "targz": "^1.0.1",
     "unzip-stream": "^0.3.0",
     "vsce": "^1.96.0",
-    "vscode-extension-tester-locators": "^1.60.0"
+    "vscode-extension-tester-locators": "file:locators"
   },
   "peerDependencies": {
     "mocha": ">=5.2.0"

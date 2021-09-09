@@ -1,7 +1,7 @@
 import { ViewSection } from "../ViewSection";
 import { ExtensionsViewItem } from "./ExtensionsViewItem";
-import { until, Key } from "selenium-webdriver";
 import { ViewContent } from "../ViewContent";
+import { until, Key } from "extension-tester-page-objects";
 
 /**
  * Categories of extensions to search for

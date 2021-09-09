@@ -1,4 +1,4 @@
-import { By } from "selenium-webdriver";
+import { By } from "extension-tester-page-objects";
 import { DeepPartial } from 'ts-essentials'; 
 
 /**

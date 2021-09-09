@@ -1,11 +1,12 @@
 import { ViewSection } from "../ViewSection";
 import { TreeItem } from "../ViewItem";
+import { ITreeItem } from "extension-tester-page-objects";
 
 /**
  * Abstract representation of a view section containing a tree
  */
 export abstract class TreeSection extends ViewSection {
-    async openItem(...path: string[]): Promise<TreeItem[]> {
+    async openItem(...path: string[]): Promise<ITreeItem[]> {
         let items: TreeItem[] = [];
 
         for (let i = 0; i < path.length; i++) {
@@ -27,7 +28,7 @@ export abstract class TreeSection extends ViewSection {
 
                 throw new Error(`Item '${path[i]}' not found. ${message}`);
             }
-            items = await currentItem.getChildren();
+            items = await currentItem.getChildren() as TreeItem[];
             if (items.length < 1) {
                 await currentItem.select();
                 return items;

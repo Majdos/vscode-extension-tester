@@ -1,11 +1,11 @@
-import { By, Locator, WebElement, error } from "selenium-webdriver";
 import { AbstractElement } from "../AbstractElement";
 import { NotificationsCenter } from "../workbench/NotificationsCenter";
+import { INotificationsCenter, IStatusBar, By, Locator, WebElement, error } from "extension-tester-page-objects";
 
 /**
  * Page object for the status bar at the bottom
  */
-export class StatusBar extends AbstractElement {
+export class StatusBar extends AbstractElement implements IStatusBar {
     constructor() {
         super(StatusBar.locators.StatusBar.constructor, StatusBar.locators.Workbench.constructor);
     }
@@ -43,7 +43,7 @@ export class StatusBar extends AbstractElement {
      * Open the notifications center
      * @returns Promise resolving to NotificationsCenter object
      */
-    async openNotificationsCenter(): Promise<NotificationsCenter> {
+    async openNotificationsCenter(): Promise<INotificationsCenter> {
         await this.toggleNotificationsCentre(true);
         return new NotificationsCenter();
     }

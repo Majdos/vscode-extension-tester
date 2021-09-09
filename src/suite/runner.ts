@@ -8,8 +8,8 @@ import { CodeUtil, ReleaseQuality } from '../util/codeUtil';
 import * as path from 'path';
 import * as yaml from 'js-yaml';
 import sanitize = require('sanitize-filename');
-import { logging } from 'selenium-webdriver';
 import * as os from 'os';
+import { logging } from 'extension-tester-page-objects';
 
 /**
  * Mocha runner wrapper

@@ -1,4 +1,4 @@
-import { WebElement } from "selenium-webdriver";
+import { WebElement } from "extension-tester-page-objects";
 
 /**
  * Condition to wait until an element's attribute has a specified value

@@ -6,7 +6,7 @@ import * as path from 'path';
 import * as child_process from 'child_process';
 import { VSRunner } from "../suite/runner";
 import { Unpack } from "./unpack";
-import { logging } from "selenium-webdriver";
+import { logging } from "extension-tester-page-objects";
 
 export enum ReleaseQuality {
     Stable = 'stable',

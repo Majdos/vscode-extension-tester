@@ -1,12 +1,11 @@
 import { ViewItem } from "../ViewItem";
-import { until, WebElement } from "selenium-webdriver";
-import { ContextMenu } from "../../menu/ContextMenu";
 import { ExtensionsViewSection } from "./ExtensionsViewSection";
+import { IContextMenu, IExtensionsViewItem, until, WebElement } from "extension-tester-page-objects";
 
 /**
  * Page object representing an extension in the extensions view
  */
-export class ExtensionsViewItem extends ViewItem {
+export class ExtensionsViewItem extends ViewItem implements IExtensionsViewItem {
 
     constructor(extensionElement: WebElement, section: ExtensionsViewSection) {
         super(extensionElement, section);
@@ -69,7 +68,7 @@ export class ExtensionsViewItem extends ViewItem {
      * Open the management context menu if the extension is installed
      * @returns Promise resolving to ContextMenu object
      */
-    async manage(): Promise<ContextMenu> {
+    async manage(): Promise<IContextMenu> {
         const button = await this.findElement(ExtensionsViewItem.locators.ExtensionsViewItem.manage);
         if ((await button.getAttribute('class')).indexOf('disabled') > -1) {
             throw new Error(`Extension '${await this.getTitle()}' is not installed`);

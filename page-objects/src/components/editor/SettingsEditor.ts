@@ -1,13 +1,12 @@
 import { Editor } from "./Editor";
-import { ContextMenu } from "../menu/ContextMenu";
-import { WebElement, Key } from "selenium-webdriver";
 import { AbstractElement } from "../AbstractElement";
 import { EditorView, EditorGroup } from "../..";
+import { ISetting, ISettingsEditor, WebElement, Key, IContextMenu } from "extension-tester-page-objects";
 
 /**
  * Page object representing the internal VSCode settings editor
  */
-export class SettingsEditor extends Editor {
+export class SettingsEditor extends Editor implements ISettingsEditor {
     
     constructor(view: EditorView | EditorGroup = new EditorView()) {
         super(view);
@@ -25,7 +24,7 @@ export class SettingsEditor extends Editor {
      * @param categories category of the setting
      * @returns Promise resolving to a Setting object if found, undefined otherwise
      */
-    async findSetting(title: string, ...categories: string[]): Promise<Setting> {
+    async findSetting(title: string, ...categories: string[]): Promise<ISetting> {
         const category = categories.join(' › ');
         const searchBox = await this.findElement(SettingsEditor.locators.Editor.inputArea);
         await searchBox.sendKeys(Key.chord(SettingsEditor.ctlKey, 'a'));
@@ -73,7 +72,7 @@ export class SettingsEditor extends Editor {
     /**
      * Context menu is disabled in this editor, throw an error
      */
-    async openContextMenu(): Promise<ContextMenu> {
+    async openContextMenu(): Promise<IContextMenu> {
         throw new Error('Operation not supported');
     }
 

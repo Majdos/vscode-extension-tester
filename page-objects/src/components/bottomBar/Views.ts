@@ -1,13 +1,14 @@
-import { Key } from "selenium-webdriver";
+
 import { BottomBarPanel, ContentAssist, Workbench } from "../..";
 import { TextView, ChannelView } from "./AbstractViews";
 import * as clipboard from 'clipboardy';
 import { ElementWithContexMenu } from "../ElementWithContextMenu";
+import { IDebugConsoleView, IMenu, IOutputView, ITerminalView, Key } from "extension-tester-page-objects";
 
 /**
  * Output view of the bottom panel
  */
-export class OutputView extends TextView {
+export class OutputView extends TextView implements IOutputView {
     constructor(panel: BottomBarPanel = new BottomBarPanel()) {
         super(OutputView.locators.OutputView.constructor, panel);
         this.actionsLabel = OutputView.locators.OutputView.actionsLabel;
@@ -18,7 +19,7 @@ export class OutputView extends TextView {
  * Debug Console view on the bottom panel
  * Most functionality will only be available when a debug session is running
  */
-export class DebugConsoleView extends ElementWithContexMenu {
+export class DebugConsoleView extends ElementWithContexMenu implements IDebugConsoleView {
     constructor(panel: BottomBarPanel = new BottomBarPanel()) {
         super(DebugConsoleView.locators.DebugConsoleView.constructor, panel);
     }
@@ -71,7 +72,7 @@ export class DebugConsoleView extends ElementWithContexMenu {
      * Create a content assist page object
      * @returns promise resolving to ContentAssist object
      */
-    async getContentAssist(): Promise<ContentAssist> {
+    async getContentAssist(): Promise<IMenu> {
         return new ContentAssist(this).wait();
     }
 }
@@ -79,7 +80,7 @@ export class DebugConsoleView extends ElementWithContexMenu {
 /**
  * Terminal view on the bottom panel
  */
-export class TerminalView extends ChannelView {
+export class TerminalView extends ChannelView implements ITerminalView {
     constructor(panel: BottomBarPanel = new BottomBarPanel()) {
         super(TerminalView.locators.TerminalView.constructor, panel);
         this.actionsLabel = TerminalView.locators.TerminalView.actionsLabel;

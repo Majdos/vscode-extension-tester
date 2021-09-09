@@ -1,12 +1,13 @@
 import { BottomBarPanel } from "../..";
 import { AbstractElement } from "../AbstractElement";
-import { WebElement } from 'selenium-webdriver';
 import { ElementWithContexMenu } from "../ElementWithContextMenu";
+import { IMarker, IProblemsView, MarkerType, WebElement } from "extension-tester-page-objects";
+
 
 /**
  * Problems view in the bottom panel
  */
-export class ProblemsView extends AbstractElement {
+export class ProblemsView extends AbstractElement implements IProblemsView {
     constructor(panel: BottomBarPanel = new BottomBarPanel()) {
         super(ProblemsView.locators.ProblemsView.constructor, panel);
     }
@@ -49,7 +50,7 @@ export class ProblemsView extends AbstractElement {
      * @param type type of markers to retrieve
      * @returns Promise resolving to array of Marker objects
      */
-    async getAllMarkers(type: MarkerType): Promise<Marker[]> {
+    async getAllMarkers(type: MarkerType): Promise<IMarker[]> {
         const markers: Marker[] = [];
         const elements = await this.findElements(ProblemsView.locators.ProblemsView.markerRow);
         for (const element of elements) {
@@ -66,7 +67,7 @@ export class ProblemsView extends AbstractElement {
 /**
  * Page object for marker in problems view
  */
-export class Marker extends ElementWithContexMenu {
+export class Marker extends ElementWithContexMenu implements IMarker {
     constructor(element: WebElement, view: ProblemsView) {
         super(element, view);
     }
@@ -110,18 +111,4 @@ export class Marker extends ElementWithContexMenu {
             }
         }
     }
-}
-
-/**
- * Possible types of markers
- *  - File = expandable item representing a file
- *  - Error = an error marker
- *  - Warning = a warning marker
- *  - Any = any of the above
- */
-export enum MarkerType {
-    File = 'file',
-    Error = 'error',
-    Warning = 'warning',
-    Any = 'any'
 }

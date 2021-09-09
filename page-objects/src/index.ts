@@ -1,8 +1,8 @@
-import { WebDriver } from 'selenium-webdriver';
+import { WebDriver } from 'extension-tester-page-objects';
 import { AbstractElement } from './components/AbstractElement';
 import { LocatorLoader } from './locators/loader';
 
-export * from 'selenium-webdriver';
+export * from 'extension-tester-page-objects';
 export * from './locators/locators';
 
 export * from './components/menu/Menu';
@@ -46,7 +46,7 @@ export * from './components/editor/DiffEditor';
 export * from './components/editor/WebView';
 export * from './components/editor/ContentAssist';
 
-export { Notification, NotificationType } from './components/workbench/Notification';
+export { Notification } from './components/workbench/Notification';
 export * from './components/workbench/NotificationsCenter';
 export * from './components/workbench/input/Input';
 export * from './components/workbench/input/InputBox';

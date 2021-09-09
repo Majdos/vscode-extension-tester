@@ -3,10 +3,10 @@
 import * as path from 'path';
 import * as fs from 'fs-extra';
 import compareVersions = require('compare-versions');
-import { WebDriver, Builder, until, By, initPageObjects, logging } from 'monaco-page-objects';
-import { Options } from 'selenium-webdriver/chrome';
+import { initPageObjects } from 'monaco-page-objects';
 import { getLocatorsPath } from 'vscode-extension-tester-locators';
 import { CodeUtil, ReleaseQuality } from './util/codeUtil';
+import { WebDriver, Builder, until, By, logging, chrome } from 'extension-tester-page-objects';
 
 export class VSBrowser {
     static readonly baseVersion = '1.37.0';
@@ -41,7 +41,7 @@ export class VSBrowser {
         if (fs.existsSync(userSettings)) {
             fs.removeSync(path.join(this.storagePath, 'settings'));
         }
-        let defaultSettings = { 
+        let defaultSettings = {
             "window.titleBarStyle": "custom",
             "workbench.editor.enablePreview": false,
             "window.restoreFullscreen": true,
@@ -59,8 +59,12 @@ export class VSBrowser {
         await fs.remove(path.join(this.storagePath, 'screenshots'));
         fs.writeJSONSync(path.join(userSettings, 'settings.json'), defaultSettings);
         console.log(`Writing code settings to ${path.join(userSettings, 'settings.json')}`);
-        
-        const args = ['--no-sandbox', '--disable-dev-shm-usage', `--user-data-dir=${path.join(this.storagePath, 'settings')}`];
+
+        const args = [
+            '--no-sandbox',
+            '--disable-dev-shm-usage',
+            `--user-data-dir=${path.join(this.storagePath, 'settings')}`
+        ];
 
         if (this.extensionsFolder) {
             args.push(`--extensions-dir=${this.extensionsFolder}`);
@@ -73,15 +77,15 @@ export class VSBrowser {
             args.push(`--extensionDevelopmentPath=${process.cwd()}`);
         }
 
-        let options = new Options().setChromeBinaryPath(codePath).addArguments(...args) as any;
+        let options = new chrome.Options().setChromeBinaryPath(codePath).addArguments(...args) as any;
         options['options_'].windowTypes = ['webview'];
-        options = options as Options;
+        options = options as chrome.Options;
 
         const prefs = new logging.Preferences();
         prefs.setLevel(logging.Type.DRIVER, this.logLevel);
         options.setLoggingPrefs(prefs);
 
-        console.log('Launching browser...')
+        console.log('Launching browser...');
         this._driver = await new Builder()
             .forBrowser('chrome')
             .setChromeOptions(options)

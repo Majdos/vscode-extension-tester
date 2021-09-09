@@ -1,12 +1,12 @@
-import { By, until, WebElement } from "selenium-webdriver";
-import { ContextMenu, ViewContent, ViewItem, waitForAttributeValue, WelcomeContentSection } from "../..";
+import { ContextMenu, ViewContent, waitForAttributeValue, WelcomeContentSection } from "../..";
 import { AbstractElement } from "../AbstractElement";
 import { ElementWithContexMenu } from "../ElementWithContextMenu";
+import { IMenu, IViewItem, IViewPanelAction, IViewSection, By, until, WebElement } from "extension-tester-page-objects";
 
 /**
  * Page object representing a collapsible content section of the side bar view
  */
-export abstract class ViewSection extends AbstractElement {
+export abstract class ViewSection extends AbstractElement implements IViewSection {
 
     constructor(panel: WebElement, content: ViewContent) {
         super(panel, content);
@@ -80,7 +80,7 @@ export abstract class ViewSection extends AbstractElement {
      * Note that any item currently beyond the visible list, i.e. not scrolled to, will not be retrieved.
      * @returns Promise resolving to array of ViewItem objects
      */
-    abstract getVisibleItems(): Promise<ViewItem[]>
+    abstract getVisibleItems(): Promise<IViewItem[]>
 
     /**
      * Find an item in this view section by label. Does not perform recursive search through the whole tree.
@@ -89,7 +89,7 @@ export abstract class ViewSection extends AbstractElement {
      * @param maxLevel Limit how deep the algorithm should look into any expanded items, default unlimited (0)
      * @returns Promise resolving to ViewItem object is such item exists, undefined otherwise
      */
-    abstract findItem(label: string, maxLevel?: number): Promise<ViewItem | undefined>
+    abstract findItem(label: string, maxLevel?: number): Promise<IViewItem | undefined>
 
     /**
      * Open an item with a given path represented by a sequence of labels
@@ -107,13 +107,13 @@ export abstract class ViewSection extends AbstractElement {
      * @returns Promise resolving to array of ViewItem objects representing the last item's children.
      * If the last item is a leaf, empty array is returned.
      */
-    abstract openItem(...path: string[]): Promise<ViewItem[]>
+    abstract openItem(...path: string[]): Promise<IViewItem[]>
 
     /**
      * Retrieve the action buttons on the section's header
      * @returns Promise resolving to array of ViewPanelAction objects
      */
-    async getActions(): Promise<ViewPanelAction[]> {
+    async getActions(): Promise<IViewPanelAction[]> {
         const actions: ViewPanelAction[] = [];
 
         if (!await this.isHeaderHidden()) {
@@ -133,7 +133,7 @@ export abstract class ViewSection extends AbstractElement {
      * @param label label/title of the button
      * @returns ViewPanelAction object if found, undefined otherwise
      */
-    async getAction(label: string): Promise<ViewPanelAction|undefined> {
+    async getAction(label: string): Promise<IViewPanelAction|undefined> {
         const actions = await this.getActions();
         for (const action of actions) {
             if (await action.getLabel() === label) {
@@ -147,7 +147,7 @@ export abstract class ViewSection extends AbstractElement {
      * 
      * @returns ContextMenu page object if the action succeeds, undefined otherwise
      */
-    async moreActions(): Promise<ContextMenu|undefined> {
+    async moreActions(): Promise<IMenu|undefined> {
         let more = await this.getAction('More Actions...');
         if (!more) {
             return undefined;

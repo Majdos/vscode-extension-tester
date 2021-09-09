@@ -1,12 +1,12 @@
-import { Key } from "selenium-webdriver";
 import { WindowControls, ContextMenu } from "../..";
 import { Menu } from "./Menu";
 import { MenuItem } from "./MenuItem";
+import { IMenuItem, ITitleBar, Key } from "extension-tester-page-objects";
 
 /**
  * Page object representing the custom VSCode title bar
  */
-export class TitleBar extends Menu {
+export class TitleBar extends Menu implements ITitleBar {
     constructor() {
         super(TitleBar.locators.TitleBar.constructor, TitleBar.locators.Workbench.constructor);
     }
@@ -16,7 +16,7 @@ export class TitleBar extends Menu {
      * @param name name of the item to search by
      * @returns Promise resolving to TitleBarItem object
      */
-    async getItem(name: string): Promise<TitleBarItem | undefined> {
+    async getItem(name: string): Promise<IMenuItem | undefined> {
         try {
             await this.findElement(TitleBar.locators.TitleBar.itemConstructor(name));
             return await new TitleBarItem(name, this).wait();
@@ -29,7 +29,7 @@ export class TitleBar extends Menu {
      * Get all title bar items
      * @returns Promise resolving to array of TitleBarItem objects
      */
-    async getItems(): Promise<TitleBarItem[]> {
+    async getItems(): Promise<IMenuItem[]> {
         const items: TitleBarItem[] = [];
         const elements = await this.findElements(TitleBar.locators.TitleBar.itemElement);
 

@@ -1,7 +1,7 @@
 import { TreeSection } from "../TreeSection";
 import { TreeItem } from "../../ViewItem";
 import { CustomTreeItem } from "./CustomTreeItem";
-import { Key, until } from "selenium-webdriver";
+import { Key, until } from "extension-tester-page-objects";
 
 /**
  * Custom tree view, e.g. contributed by an extension

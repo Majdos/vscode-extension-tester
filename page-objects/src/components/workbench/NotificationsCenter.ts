@@ -1,10 +1,11 @@
 import { AbstractElement } from "../AbstractElement";
-import { Notification, CenterNotification, NotificationType } from "./Notification";
+import { Notification, CenterNotification } from "./Notification";
+import { INotification, INotificationsCenter, NotificationType } from "extension-tester-page-objects";
 
 /**
  * Notifications center page object
  */
-export class NotificationsCenter extends AbstractElement {
+export class NotificationsCenter extends AbstractElement implements INotificationsCenter {
     constructor() {
         super(NotificationsCenter.locators.NotificationsCenter.constructor, NotificationsCenter.locators.Workbench.constructor);
     }
@@ -35,7 +36,7 @@ export class NotificationsCenter extends AbstractElement {
      * 
      * @returns Promise resolving to array of Notification objects
      */
-    async getNotifications(type: NotificationType): Promise<Notification[]> {
+    async getNotifications(type: NotificationType): Promise<INotification[]> {
         const notifications: Notification[] = [];
         const elements = await this.findElements(NotificationsCenter.locators.NotificationsCenter.row);
 

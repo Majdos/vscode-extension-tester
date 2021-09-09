@@ -1,6 +1,6 @@
 import { TreeItem } from "../../ViewItem";
 import { TreeSection } from "../TreeSection";
-import { WebElement } from "selenium-webdriver";
+import { WebElement } from "extension-tester-page-objects";
 
 /**
  * Default tree item base on the items in explorer view

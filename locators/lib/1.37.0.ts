@@ -1,4 +1,4 @@
-import { By } from "selenium-webdriver";
+import { By } from "extension-tester-page-objects";
 import { Locators } from "monaco-page-objects";
 
 const activityBar = {

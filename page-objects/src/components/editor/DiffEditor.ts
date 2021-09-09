@@ -1,18 +1,20 @@
 import { Editor } from './Editor';
 import { TextEditor } from './TextEditor';
 import { EditorView } from './EditorView';
+import { IDiffEditor, ITextEditor } from "extension-tester-page-objects";
+
 
 /**
  * Page object representing a diff editor
  */
-export class DiffEditor extends Editor {
+export class DiffEditor extends Editor implements IDiffEditor {
 
     /**
      * Gets the text editor corresponding to the originalside.
      * (The left side of the diff editor)
      * @returns Promise resolving to TextEditor object
      */
-    async getOriginalEditor(): Promise<TextEditor> {
+    async getOriginalEditor(): Promise<ITextEditor> {
         const element = await this.getEnclosingElement().findElement(DiffEditor.locators.DiffEditor.originalEditor);
         return new TextEditor(new EditorView(), element);
     }
@@ -22,7 +24,7 @@ export class DiffEditor extends Editor {
      * (The right side of the diff editor)
      * @returns Promise resolving to TextEditor object
      */
-    async getModifiedEditor(): Promise<TextEditor> {
+    async getModifiedEditor(): Promise<ITextEditor> {
         const element = await this.getEnclosingElement().findElement(DiffEditor.locators.DiffEditor.modifiedEditor);
         return new TextEditor(new EditorView(), element);
     }

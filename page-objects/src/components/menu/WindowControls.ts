@@ -1,11 +1,11 @@
 import { AbstractElement } from "../AbstractElement";
 import { TitleBar } from "../..";
-import { WebElement } from "selenium-webdriver";
+import { IWindowControls, WebElement } from "extension-tester-page-objects";
 
 /**
  * Page object for the windows controls part of the title bar
  */
-export class WindowControls extends AbstractElement {
+export class WindowControls extends AbstractElement implements IWindowControls {
     constructor(bar: TitleBar = new TitleBar()) {
         super(WindowControls.locators.WindowControls.constructor, bar);
     }

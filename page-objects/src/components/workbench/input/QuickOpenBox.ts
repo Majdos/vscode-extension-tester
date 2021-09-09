@@ -1,5 +1,5 @@
 import { Input, QuickPickItem } from "../../..";
-import { until } from "selenium-webdriver";
+import { IQuickPickItem, until } from "extension-tester-page-objects";
 
 /**
  * @deprecated as of VS Code 1.44.0, quick open box has been replaced with input box
@@ -25,7 +25,7 @@ export class QuickOpenBox extends Input {
         return klass.indexOf('done') < 0;
     }
 
-    async getQuickPicks(): Promise<QuickPickItem[]> {
+    async getQuickPicks(): Promise<IQuickPickItem[]> {
         const picks: QuickPickItem[] = [];
         const tree = await this.getDriver().wait(until.elementLocated(QuickOpenBox.locators.QuickOpenBox.quickList), 1000);
         const elements = await tree.findElements(QuickOpenBox.locators.QuickOpenBox.row);

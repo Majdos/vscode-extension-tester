@@ -1,6 +1,5 @@
 import { TreeSection } from "../TreeSection";
-import { TreeItem } from "../../../..";
-import { Key } from 'selenium-webdriver';
+import { TreeItem, Key } from "../../../..";
 import { DefaultTreeItem } from "./DefaultTreeItem";
 
 /**

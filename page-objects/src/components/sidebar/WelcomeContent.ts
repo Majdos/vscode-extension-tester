@@ -1,6 +1,5 @@
-import { WebElement } from "selenium-webdriver";
 import { AbstractElement } from "../AbstractElement";
-import { ViewSection } from "../..";
+import { ViewSection, WebElement } from "../..";
 
 /**
  * A button that appears in the welcome content and can be clicked to execute a command.

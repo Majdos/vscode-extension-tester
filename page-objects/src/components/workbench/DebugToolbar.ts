@@ -1,4 +1,4 @@
-import { until, WebElement } from "selenium-webdriver";
+import { until, WebElement } from "extension-tester-page-objects";
 import { AbstractElement } from "../AbstractElement";
 import { Workbench } from "./Workbench";
 
