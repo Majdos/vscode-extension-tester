@@ -33,7 +33,7 @@ async function main() {
         const testFile = path.join(MOCHA_FOLDER, `${hookName}.js`);
         try {
             if (!fs.existsSync(testFile)) throw new Error(`Test file "${testFile}" does not exist.`);
-
+            fs.unlinkSync('./test-'); // TMP workaround for failing GitHub CI check
             const result = await tester.runTests(testFile, {
                 cleanup: false
             });
